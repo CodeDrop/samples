@@ -11,6 +11,8 @@ public class Person
 
     public DateTime BirthDate { get; set; }
 
+    #region operators 
+
     public static bool operator ==(Person? a, object? obj)
     {
         return obj is Person b && a?.Name == b.Name;
@@ -30,4 +32,6 @@ public class Person
     {
         return Name.GetHashCode();
     }
+
+    #endregion operators
 }

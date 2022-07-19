@@ -8,17 +8,17 @@ namespace PatternMatchingSample;
 /// </remarks>
 public class PatternMatchingSample
 {
+    // return o.GetType() == typeof(Person);
+    // return (o as Person) != null;
     public bool MatchType(object o)
     {
         return o is Person;
-        // return (o as Person) != null;
-        // return o.GetType() == typeof(Person);
     }
 
+    // return wd.GetType() == typeof(Person); // ==> false
     public bool MatchBaseType(WebDeveloperPerson wd)
     {
         return wd is Person; // ==> true
-        // return wd.GetType() == typeof(Person); // ==> false
     }
 
     public bool MatchPropertyPattern_Constant(Person p)
@@ -36,35 +36,57 @@ public class PatternMatchingSample
         return p is { BirthDate.DayOfWeek: not DayOfWeek.Saturday and not DayOfWeek.Sunday };
     }
 
+    // var p = (o as Person);
+    // return (p != null && p.Name == "Jane" && p.BirthDate.Year == 1069 && ...);
     public bool MatchPropertyPattern_Combined(object o)
     {
         return o is Person
         {
             Name: "Jane",
-            BirthDate: { Month: >= 6 and <= 8, Year: 1969 },
-            BirthDate.DayOfWeek: DayOfWeek.Monday or DayOfWeek.Friday,
+            BirthDate:
+            { Month: >= 6 and <= 8, Year: 1969, DayOfWeek: DayOfWeek.Monday or DayOfWeek.Friday }
         };
-        // var p = (o as Person);
-        // return (p != null && p.Name == "Jane" && p.BirthDate.Year == 1069 && ...);
     }
 
-    public int MatchPatternToVariable(object o)
+    public string MatchPatternToVariable(object o)
     {
-        if (o is int i)
-            return i;
-        if (o is Person { BirthDate.Month: 1 } p)
-            return p.BirthDate.Day;
-        return 0;
+        if (o is Person p)
+            return p.Name + ": " + p.BirthDate.ToLongDateString();
+        return "";
     }
 
     public string MatchPatternWithSwitch(Person person)
     {
         return person switch
         {
-            { Name: "Markus" } => "nice",
+            { Name: "Markus" } => "ok",
             { BirthDate.DayOfWeek: DayOfWeek.Sunday } => "holy",
             { BirthDate.Year: < 1993 } => "old",
             _ => "nothing special"
+        };
+    }
+
+    // switch (dayOfWeek)
+    // {
+    //    case DayOfWeek.Sunday:
+    //        return "Son";
+    //        break;
+    //    case DayOfWeek.Monday:
+    //        return "Mon";
+    //        break;
+    //    //..
+    //    default:
+    //        return "don't mind"
+    //        break;
+    // }
+    public string MatchEnumWithSwitch(DayOfWeek dayOfWeek)
+    {
+        return dayOfWeek switch
+        {
+            DayOfWeek.Sunday => "Son",
+            DayOfWeek.Monday => "Mon",
+            //..
+            _ => "don't mind"
         };
     }
 
