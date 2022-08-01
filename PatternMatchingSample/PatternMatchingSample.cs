@@ -5,7 +5,7 @@ namespace PatternMatchingSample;
 /// <remarks>
 /// https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/is
 /// https://docs.microsoft.com/en-us/dotnet/csharp/fundamentals/functional/pattern-matching
-/// https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/type-testing-and-cast?f1url=%3FappId%3DDev16IDEF1%26l%3DEN-US%26k%3Dk(is_CSharpKeyword)%3Bk(DevLang-csharp)%26rd%3Dtrue#is-operator
+/// https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/type-testing-and-cast#is-operator
 /// </remarks>
 public class PatternMatchingSample
 {
