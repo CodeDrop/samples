@@ -4,14 +4,14 @@
 
     public class ClassicProduct
     {
-        public ClassicProduct(string name, decimal price)
+        public ClassicProduct(int id, string name)
         {
+            Id = id;
             Name = name;
-            Price = price;
         }
 
+        public int Id { get; set; }
         public string Name { get; set; }
-        public decimal Price { get; set; }
     }
 
     #endregion Classic
@@ -20,14 +20,14 @@
 
     public class ImmutableProduct
     {
-        public ImmutableProduct(string name, decimal price)
+        public ImmutableProduct(int id, string name)
         {
+            Id = id;
             Name = name;
-            Price = price;
         }
 
+        public int Id { get; }
         public string Name { get; }
-        public decimal Price { get; }
     }
 
     #endregion Immutable
@@ -36,15 +36,15 @@
 
     public record class ImmutableInitProduct
     {
+        public int Id { get; init; } = 0;
         public string Name { get; init; } = "";
-        public decimal Price { get; init; } = 0m;
     }
 
     #endregion Record
 
     #region Immutable record
 
-    public record class RecordProduct(string Name, decimal Price);
+    public record class RecordProduct(int Id, string Name);
 
     #endregion Immutable record
 
@@ -56,21 +56,21 @@
             : base(original)
         { }
 
-        public double DiscountFactor { get; init; }
+        public double Price { get; init; }
     }
 
     #endregion Extended record
 
-    #region Copy without auto-mapper
+    #region Copiable record (without auto-mapper)
 
-    public record class CopiableProduct(string Name, decimal Price)
+    public record class CopiableProduct(int Id, string Name)
     {
-        public bool IsSold { get; set; }
-
         public CopiableProduct Copy()
         {
             return new CopiableProduct(this);
         }
+
+        public bool IsSold { get; set; }
     }
 
     #endregion Extended record
