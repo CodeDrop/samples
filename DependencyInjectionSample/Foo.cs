@@ -2,12 +2,10 @@
 
 public class Foo
 {
-    private static int numberOfInstances;
-
     public Foo()
     {
-        numberOfInstances += 1;
+        NumberOfInstances += 1;
     }
 
-    public static int NumberOfInstances => numberOfInstances;
+    public static int NumberOfInstances { get; set; }
 }
