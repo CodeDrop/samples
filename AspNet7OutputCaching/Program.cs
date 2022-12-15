@@ -6,10 +6,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 builder.Services.AddOutputCache(options =>
 {
-    options.AddPolicy("static-cache", 
+    options.AddPolicy("static-cache",
         builder => builder.Expire(TimeSpan.FromHours(4)));
     options.AddPolicy("shorttime-cache",
         builder => builder.Expire(TimeSpan.FromSeconds(5)));
@@ -18,35 +17,35 @@ builder.Services.AddOutputCache(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
 app.UseHttpsRedirection();
 app.UseOutputCache();
 
-app.MapGet("/", () => "Hello World!");
-app.MapGet("/time", () => DateTime.Now.ToString());
+// Configure endpoints
+app.MapGet("/time", () => CurrentTime());
 
-app.MapGet("/time/cached", () => DateTime.Now.ToString()).CacheOutput();
+app.MapGet("/time/cached", () => CurrentTime())
+    .CacheOutput();
 
-app.MapGet("/time/varybyquery", () => DateTime.Now.ToString())
+app.MapGet("/time/cached/varybyquery", () => CurrentTime())
     .CacheOutput(p => p.SetVaryByQuery("culture"));
-app.MapGet("/time/varybyheader", () => DateTime.Now.ToString())
+app.MapGet("/time/cached/varybyheader", () => CurrentTime())
     .CacheOutput(p => p.SetVaryByHeader("accept"));
 
-app.MapGet("/time/static-cache", () => DateTime.Now.ToString())
+app.MapGet("/time/cached/policy-static", () => CurrentTime())
     .CacheOutput(policyName: "static-cache");
-app.MapGet("/time/shorttime-cache", () => DateTime.Now.ToString())
+app.MapGet("/time/cached/policy-shorttime", () => CurrentTime())
     .CacheOutput(policyName: "shorttime-cache");
-app.MapGet("/time/shorttime-cache-attribute",
+app.MapGet("/time/cached/attribute",
     [OutputCache(PolicyName = "shorttime-cache")]
-    () => DateTime.Now.ToString());
+    () => CurrentTime());
 
-app.MapGet("/time/varybyvalue", () => DateTime.Now.ToString())
+app.MapGet("/time/cached/varybyvalue", () => CurrentTime())
     .CacheOutput(p => p.VaryByValue(context =>
     new KeyValuePair<string, string>("user", context.Session.GetString("userid") ?? "-")));
 
 app.Run();
+
+static string CurrentTime()
+{
+    return DateTime.Now.ToLongTimeString();
+}
