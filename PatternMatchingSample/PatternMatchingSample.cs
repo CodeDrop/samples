@@ -87,7 +87,13 @@ public class PatternMatchingSample
 
     #endregion Declaration pattern
 
-    #region Pattern matching with switch - enum
+    #region Pattern matching - enum
+
+    // if (dayOfWeek != DayOfWeek.Sunday) ...
+    public bool MatchEnum(DayOfWeek dayOfWeek)
+    {
+        return dayOfWeek is not DayOfWeek.Sunday;
+    }
 
     // string dayAbbeviation = "";
     // switch (dayOfWeek)
