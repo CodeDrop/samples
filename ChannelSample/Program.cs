@@ -25,17 +25,17 @@ var producer = Task.Run((async () =>
 
 var consumer1 = Task.Run(async () =>
 {
-    while (await channel.Reader.WaitToReadAsync())
+    while (!channel.Reader.Completion.IsCompleted)
         await ReadItemFromChannel("C1", channel.Reader, 800);
 });
 
 var consumer2 = Task.Run(async () =>
 {
-    while (await channel.Reader.WaitToReadAsync())
+    while (!channel.Reader.Completion.IsCompleted)
         await ReadItemFromChannel("C2", channel.Reader, 1100);
 });
 
-await channel.Reader.Completion;
+Task.WaitAll(producer, consumer1, consumer2);
 
 static async Task ReadItemFromChannel(string consumer, ChannelReader<string> channelReader, int durationInMilliseconds)
 {
