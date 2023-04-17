@@ -18,6 +18,7 @@ app.UseOutputCache();
 // Model
 static string CurrentTime()
 {
+    Thread.Sleep(1000);
     return DateTime.Now.ToLongTimeString();
 }
 
@@ -27,8 +28,8 @@ app.MapGet("/time", () => CurrentTime());
 app.MapGet("/time/cache", () => CurrentTime())
     .CacheOutput();
 
-app.MapGet("/time/cache-3-seconds", () => CurrentTime())
-    .CacheOutput(option => option.Expire(TimeSpan.FromSeconds(3)));
+app.MapGet("/time/cache-5-seconds", () => CurrentTime())
+    .CacheOutput(option => option.Expire(TimeSpan.FromSeconds(5)));
 
 app.MapGet("/time/cache-per-query", () => CurrentTime())
     .CacheOutput(option => option.SetVaryByQuery("queryKey"));
