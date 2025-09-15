@@ -2,7 +2,7 @@
 {
     public class Match : Tuple<int, int>
     {
-        public static readonly Match Empty = new Match(0, 0);
+        public static readonly Match Empty = new(0, 0);
 
         public Match(int item1, int item2) : base(item1, item2)
         {
