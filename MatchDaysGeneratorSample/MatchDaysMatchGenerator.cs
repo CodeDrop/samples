@@ -1,6 +1,6 @@
 ﻿namespace MatchDaysGeneratorSample
 {
-    public class MatchdayGenerator(int _teamsCount = 10)
+    public class MatchdaysMatchGenerator(int _teamsCount = 10)
     {
         private readonly Matchday _matches = [];
         private readonly List<Matchday> _matchdays = [];
@@ -14,13 +14,13 @@
             return _matchdays;
         }
 
-        private IEnumerable<Match> GenerateMatches()
+        private IEnumerable<MatchIndexPair> GenerateMatches()
         {
             for (int i = 1; i <= _teamsCount; i++)
             {
                 for (int j = i + 1; j <= _teamsCount; j++)
                 {
-                    yield return new Match(i, j);
+                    yield return new MatchIndexPair(i, j);
                 }
             }
         }
@@ -40,11 +40,11 @@
             var matchday = new Matchday();
             while (matchday.Count < blockSize)
             {
-                var invalidatedMatches = new List<Match>();
+                var invalidatedMatches = new List<MatchIndexPair>();
                 var nextMatch = GetNextMatch(matchday);
-                if (nextMatch == Match.Empty)
+                if (nextMatch == MatchIndexPair.Empty)
                 {
-                    nextMatch = _matches.Except(invalidatedMatches).FirstOrDefault() ?? Match.Empty;
+                    nextMatch = _matches.Except(invalidatedMatches).FirstOrDefault() ?? MatchIndexPair.Empty;
                     invalidatedMatches.AddRange(matchday.MatchesWithPlayersFrom(nextMatch));
                     _matches.AddRange(invalidatedMatches);
                     matchday.RemoveAll(invalidatedMatches.Contains);
@@ -55,9 +55,9 @@
             return matchday;
         }
 
-        private Match GetNextMatch(Matchday matchday)
+        private MatchIndexPair GetNextMatch(Matchday matchday)
         {
-            if (_matches.Count == 0) return Match.Empty;
+            if (_matches.Count == 0) return MatchIndexPair.Empty;
 
             for (int i = 0; i < _matches.Count; i++)
             {
@@ -68,7 +68,7 @@
                 }
             }
 
-            return Match.Empty;
+            return MatchIndexPair.Empty;
         }
     }
 }

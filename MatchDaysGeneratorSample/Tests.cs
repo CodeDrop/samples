@@ -11,7 +11,7 @@ namespace MatchDaysGeneratorSample
         [TestCase(16)]
         public void MatchDaysTest(int teamsCount)
         {
-            var generator = new MatchdayGenerator(teamsCount);
+            var generator = new MatchdaysMatchGenerator(teamsCount);
             var _matchdays = generator.Generate();
 
             Assert.That(_matchdays, Has.Count.EqualTo(teamsCount - 1));

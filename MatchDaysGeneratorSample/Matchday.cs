@@ -2,9 +2,9 @@
 
 namespace MatchDaysGeneratorSample
 {
-    public class Matchday : List<Match>
+    public class Matchday : List<MatchIndexPair>
     {
-        public bool ContainsPlayerIn(Match match)
+        public bool ContainsPlayerIn(MatchIndexPair match)
         {
             return this.Any(m => 
                 m.Item1 == match.Item1 || 
@@ -14,7 +14,7 @@ namespace MatchDaysGeneratorSample
             );
         }
 
-        public IEnumerable<Match> MatchesWithPlayersFrom(Match match)
+        public IEnumerable<MatchIndexPair> MatchesWithPlayersFrom(MatchIndexPair match)
         {
             return this.Where(m => 
                 m.Item1 == match.Item1 || 
